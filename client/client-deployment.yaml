@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+  labels:
+    app: containerization_hw
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: containerization_hw
+  template:
+    metadata:
+      labels:
+        app: containerization_hw
+    spec:
+      containers:
+        - name: client
+          image: client
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: REACT_APP_PORT
+              value: '35545'
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Never
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-service
+  labels:
+    app: containerization_hw
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: containerization_hw
