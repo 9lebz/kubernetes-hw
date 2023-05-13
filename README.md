@@ -1,4 +1,4 @@
-# Kubernetes task
+# Containerization
 ## Description
 Deploy a backend-frontend app using Kubernetes. 
 
